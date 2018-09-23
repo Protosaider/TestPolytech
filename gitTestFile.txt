@@ -3,3 +3,4 @@ Create commit with tag.
 Third change in file.
 Fourth change in file. We will try to merge branch here.
 Merge: Now I use checkout command.
+Next update in file. Master, master.
