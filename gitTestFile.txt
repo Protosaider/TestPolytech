@@ -5,3 +5,4 @@ Fourth change in file. We will try to merge branch here.
 Merge: Now I use checkout command.
 Next update in file. Master, master.
 THERE WILL BE REBASE. ALLYOURBASEAREBELONGTOUS.
+AND AGAIN!
