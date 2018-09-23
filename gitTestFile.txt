@@ -1,3 +1,4 @@
 Hello, git!
 Create commit with tag.
 Third change in file.
+Fourth change in file. We will try to merge branch here.
