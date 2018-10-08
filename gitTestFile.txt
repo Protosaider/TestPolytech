@@ -6,3 +6,5 @@ Merge: Now I use checkout command.
 Next update in file. Master, master.
 THERE WILL BE REBASE. ALLYOURBASEAREBELONGTOUS.
 AND AGAIN!
+
+Change last commit using git commit --amend
