@@ -9,4 +9,4 @@ AND AGAIN!
 
 Change last commit using git commit --amend
 
-Add string, than comit, then git reverts
+Add string, than comit, then git reverts (REVERT)
