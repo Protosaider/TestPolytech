@@ -8,3 +8,5 @@ THERE WILL BE REBASE. ALLYOURBASEAREBELONGTOUS.
 AND AGAIN!
 
 Change last commit using git commit --amend
+
+Add string, than comit, then git reverts
