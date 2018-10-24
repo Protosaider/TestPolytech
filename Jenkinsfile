@@ -13,7 +13,7 @@ pipeline {
             steps {
             	echo 'Build'
                 //bat 'python --version'
-                //bat 'echo %PATH%'
+                bat 'echo %PATH%'
             }
         }
     }
