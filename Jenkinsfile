@@ -12,7 +12,7 @@ pipeline {
         stage('build') {
             steps {
             	echo 'Build'
-                //bat 'python --version'
+                bat 'python --version'
                 bat 'echo %PATH%'
             }
         }
