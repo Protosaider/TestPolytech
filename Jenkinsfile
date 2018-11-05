@@ -1,69 +1,65 @@
 pipeline {
-    //agent { docker { image 'python:3.6.4' } }
-    //agent { label 'vs2017' }
 
     agent none
     
-    //environment {
-    //	RELEASE_NUMBER = '0.0'
-    //	VERSION_NUMBER = VersionNumber(versionNumberString: '0.0.${BUILDS_ALL_TIME}')
-    //}
+    environment {
+        PATH_TO_PROJECT_ROOT = 'ConsoleAppHelloWorld/'
+        PATH_TO_MSBUILD = 'C:/"Program Files (x86)"/"Microsoft Visual Studio"/2017/Community/MSBuild/15.0/Bin/'
+        PATH_TO_NUGET = 'C:/"Program Files (x86)"/NuGet/'
+        PROJECT_NAME = 'ConsoleAppHelloWorld'
+    }
 
     stages {
 
     	stage('Checkout from Git')
     	{
     		agent any
-    		steps{
-    			script {
-    				currentBuild.displayName = "#${VERSION_NAME}"
-    			}
+    		steps {
+    			//script {
+    			//	currentBuild.displayName = "#${VERSION_NAME}"
+    			//}
     			checkout scm
     		}
     	}
 
-    	stage('Nuget package restore')
-    	{
-    		//agent { label 'nuget'}
-    		agent any
-    		steps {
-    			echo 'Restoring Nuget package'
-    			bat '"%NUGET_PATH%" restore App.sln'
-    			dir ('.') {
-    				stash 'sources'
-    			}
-    		}
-    	}
-
-        stage('build') {
-        	//agent { label 'dotNet_4.7'}
-        	agent any
+        stage('Restore Nuget package')
+        {
+            agent any
             steps {
-            	dir ('.') {
-            		unstash 'sources'
-            	}
-
-                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-
-                bat "\"${tool name: 'Default', type: 'msbuild'}\\msbuild.exe\" App.sln /p:Configuration=Release/p:Platform=\"Any CPU\""
-
-                dir ('App/bin') {
-                	stash 'bins'
-                }            
-
-                bat 'echo %PATH%'
+                echo 'Restoring Nuget package'
+                //groovy.lang.MissingPropertyException: No such property: NUGET_PATH for class: groovy.lang.Binding
+                //bat ""%NUGET_PATH%" restore ${PATH_TO_PROJECT_ROOT}${PROJECT_NAME}.sln"
+                //bat 'nuget restore SolutionName.sln'
+                bat "${PATH_TO_NUGET}nuget.exe restore ${PATH_TO_PROJECT_ROOT}${PROJECT_NAME}.sln"
             }
         }
 
-        stage('Archive') {
-      		agent any
-      		steps {
-        		dir ('TestSolution/bin') {
-         	 		unstash 'bins'
-        		}
-        		archive '**/bin/Release/**.dll'
-      		}
-    	}
+        stage('Build with MSBuild')
+        {
+            agent any
+            steps {
+                echo 'Build'
+                // Platform="x86" или Platform="x64"
+                // ProcessorArchitecture="msil", "x86", "amd64" и "ia64".
+                //bat "\"${tool 'MSBuild'}\" SolutionName.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+
+                bat "${PATH_TO_MSBUILD}MSBuild.exe ${PATH_TO_PROJECT_ROOT}${PROJECT_NAME}.sln /property:Configuration=Release /property:Platform=\"Any CPU\" /property:ProductVersion=1.0.0.${env.BUILD_NUMBER} /property:OutDir=\"bin/Release\" /property:Utf8Output=true"
+            }
+        }
+
+        //stage('Archive') {
+        //    agent any
+        //    steps {
+        //        dir ('TestSolution/bin') {
+        //            unstash 'bins'
+        //        }
+        //    archive '**/bin/Release/**.dll'
+        //    }
+        //}
+
+        //stage ('Archive') {
+        //    archive '${PROJECT_NAME}/bin/Release/**'
+        //}
     }
 
     post {

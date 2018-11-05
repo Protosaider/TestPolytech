@@ -10,3 +10,8 @@ AND AGAIN!
 Change last commit using git commit --amend
 
 Add string, than comit, then git reverts (REVERT)
+
+Next time we need a REBASE or REVERT or SMTH ELSE.
+Because now commit tree looks like crap.
+It was happened because of multiple iterations of such response sequence:
+commit --amend => pull => merge => push
