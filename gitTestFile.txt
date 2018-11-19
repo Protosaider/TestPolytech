@@ -15,3 +15,5 @@ Next time we need a REBASE or REVERT or SMTH ELSE.
 Because now commit tree looks like crap.
 It was happened because of multiple iterations of such response sequence:
 commit --amend => pull => merge => push
+
+Now I test the webhook. It should trigger a build.
