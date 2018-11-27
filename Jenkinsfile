@@ -1,8 +1,6 @@
 pipeline {
 
     agent none
-    
-    def app
 
     environment {
         PATH_TO_PROJECT_ROOT = 'app/'
@@ -12,6 +10,8 @@ pipeline {
     }
 
     stages {
+
+        def app
 
         stage('Checkout from Git')
         {
