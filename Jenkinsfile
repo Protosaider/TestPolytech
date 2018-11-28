@@ -19,12 +19,6 @@ pipeline {
 
     stages {
 
-        stage('Clean workspace') {
-            steps {
-                deleteDir()
-            }
-        }
-
         stage('Checkout from Git')
         {
             agent any
@@ -158,6 +152,7 @@ pipeline {
     post {
         always {
             echo 'Post message'
+            deleteDir()
         }
         failure {
             echo 'On Failure post-condition'
