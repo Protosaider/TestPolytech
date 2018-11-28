@@ -1,4 +1,4 @@
-FROM microsoft/dotnet-framework:4.7.2 AS build-env
+FROM microsoft/dotnet-framework:4.7.2-sdk AS build-env
 
 SHELL ["powershell"]
 
