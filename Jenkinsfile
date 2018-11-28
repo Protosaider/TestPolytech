@@ -34,6 +34,7 @@ pipeline {
             agent any
             steps {
                 /* This builds the actual image; synonymous to docker build on the command line */
+                bat 'echo "IN BUILD"'
                 script {
                     app = docker.build()
                 }
@@ -152,13 +153,15 @@ pipeline {
     post {
         always {
             echo 'Post message'
-            deleteDir()
         }
         failure {
             echo 'On Failure post-condition'
         }
         success {
             echo 'On Success post-condition'
+        }
+        cleanup {
+            deleteDir()
         }
     }
 }
