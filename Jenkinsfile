@@ -11,8 +11,6 @@ pipeline {
 
     stages {
 
-        def app
-
         stage('Checkout from Git')
         {
             agent any
@@ -26,43 +24,55 @@ pipeline {
 
         stage('Build image') {
             agent any
-            /* This builds the actual image; synonymous to docker build on the command line */
-            app = docker.build("getintodevops/hellonode")
+            steps {
+                /* This builds the actual image; synonymous to docker build on the command line */
+                script {
+                    app = docker.build()
+                }
+            }
         }
 
         stage('Test image') {
             agent any
-            /* Ideally, we would run a test framework against our image. For this example, we're using a Volkswagen-type approach ;-) */
-            app.inside {
-                //sh 'echo "Tests passed"'
-                bat 'echo "Tests passed"'
+            steps {
+                script {
+                    /* Ideally, we would run a test framework against our image. For this example, we're using a Volkswagen-type approach ;-) */
+                    app.inside {
+                        //sh 'echo "Tests passed"'
+                        bat 'echo "Tests passed"'
+                    }
+                }
             }
         }
 
         stage ('Run Application') {
             agent any
-            try {
-                // Start database container here
-                // sh 'docker run -d --name db -p 8091-8093:8091-8093 -p 11210:11210 arungupta/oreilly-couchbase:latest'
+            steps {
+                script {
+                    try {
+                        // Start database container here
+                        // sh 'docker run -d --name db -p 8091-8093:8091-8093 -p 11210:11210 arungupta/oreilly-couchbase:latest'
 
-        // // Run application using Docker image
-        // sh "DB=`docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' db`"
-        // sh "docker run -e DB_URI=$DB arungupta/docker-jenkins-pipeline:${env.BUILD_NUMBER}"
+                // // Run application using Docker image
+                // sh "DB=`docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' db`"
+                // sh "docker run -e DB_URI=$DB arungupta/docker-jenkins-pipeline:${env.BUILD_NUMBER}"
 
-                app.inside {
-                    bat '/app/out/ConsoleAppHelloWorld.exe'
+                        app.inside {
+                            bat '/app/out/ConsoleAppHelloWorld.exe'
+                        }
+                        
+                        // Run tests using Maven
+                        //dir ('webapp') {
+                        //  sh 'mvn exec:java -DskipTests'
+                        //}
+                    } catch (error) {
+                    } finally {
+                        bat 'echo "SOMETHING WRONG"'
+                        // Stop and remove database container here
+                        //sh 'docker-compose stop db'
+                        //sh 'docker-compose rm db'
+                    }
                 }
-                
-                // Run tests using Maven
-                //dir ('webapp') {
-                //  sh 'mvn exec:java -DskipTests'
-                //}
-            } catch (error) {
-            } finally {
-                bat 'echo "SOMETHING WRONG"'
-                // Stop and remove database container here
-                //sh 'docker-compose stop db'
-                //sh 'docker-compose rm db'
             }
         }
 
