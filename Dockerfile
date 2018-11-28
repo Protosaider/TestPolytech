@@ -1,4 +1,4 @@
-FROM microsoft/dotnet-framework:latest AS build-env
+FROM microsoft/dotnet-framework:4.7.2 AS build-env
 
 SHELL ["powershell"]
 
@@ -14,7 +14,7 @@ RUN dotnet publish -c Release -o out
 # COPY /app/tests/. .
 # ENTRYPOINT ["dotnet", "test", "--logger:trx"]
 
-FROM microsoft/dotnet-framework:runtime AS runtime
+FROM microsoft/dotnet-framework:4.7.2-runtime AS runtime
 WORKDIR /app
 COPY --from=/app/build /app/out ./
 ENTRYPOINT ["dotnet", "dotnetapp.dll"]
