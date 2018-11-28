@@ -36,7 +36,7 @@ pipeline {
                 /* This builds the actual image; synonymous to docker build on the command line */
                 bat 'echo "IN BUILD"'
                 script {
-                    app = docker.build("test-name")
+                    app = bat 'mingw32-make make -f Makefile build'
                 }
             }
         }
