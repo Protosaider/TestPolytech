@@ -36,7 +36,7 @@ pipeline {
                 /* This builds the actual image; synonymous to docker build on the command line */
                 bat 'echo "IN BUILD"'
                 script {
-                    app = docker.build()
+                    app = docker.build("test-name")
                 }
             }
         }
