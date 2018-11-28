@@ -9,7 +9,21 @@ pipeline {
         PROJECT_NAME = 'ConsoleAppHelloWorld'
     }
 
+    options {
+            //Skip checking out code from source control by default in the agent directive.
+        skipDefaultCheckout true 
+            //Used with docker or dockerfile top-level agent. 
+            //When specified, each stage will run in a new container instance on the same node, rather than all stages running in the same container instance.
+        // newContainerPerStage false
+    }
+
     stages {
+
+        stage('Clean workspace') {
+            steps {
+                deleteDir()
+            }
+        }
 
         stage('Checkout from Git')
         {
